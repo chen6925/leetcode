@@ -11,29 +11,28 @@
  */
 class Solution {
 public:
-    bool isSymmetric(TreeNode* root) {
-    queue<TreeNode *> q;
-    q.push(root->left);
-    q.push(root->right);
-    vector<int> vec;
-    while(!q.empty())
-    {   
-        TreeNode *node1 = q.front();
-        q.pop();
-        TreeNode *node2 = q.front();
-        q.pop();
-        if(node1 != nullptr && node2 != nullptr)
+    bool isSymmetric(TreeNode* root) 
+    {
+        queue<TreeNode*> queue;
+        queue.push(root->left);
+        queue.push(root->right);
+        while(!queue.empty() )
         {
-            if(node1->val != node2->val)
-                return false;
-        }else if(node1 != node2)
-            return false;
-        else continue;
-        q.push(node1->left);
-        q.push(node2->right);
-        q.push(node1->right);
-        q.push(node2->left);
-    }
-    return true;
+            TreeNode *Node1 = queue.front();
+            queue.pop();
+            TreeNode *Node2 = queue.front();
+            queue.pop();
+
+            if(!Node1 && !Node2) continue;
+            if(!Node1 || !Node2 || Node1 -> val != Node2 -> val) 
+                return false;   
+
+            queue.push(Node1 -> left);
+            queue.push(Node2 -> right);
+
+            queue.push(Node1 -> right);
+            queue.push(Node2 -> left);
+        }
+        return true;
     }
 };
