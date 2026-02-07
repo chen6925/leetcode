@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) 
+    {
+        int count = numCourses;
+        vector<int> indegrees(numCourses,0);
+        vector<vector<int>> graph(numCourses);
+        for(auto prerequisite:prerequisites)
+        {
+            graph[prerequisite[1]].push_back(prerequisite[0]);
+            indegrees[prerequisite[0]]++;
+        }
+        queue<int> q;
+        for(int i = 0;i < numCourses;i++)
+        {
+            if(indegrees[i] == 0) 
+            {
+                q.push(i);
+                count--;
+            }
+        }
+        while(!q.empty())
+        {
+            int current = q.front();
+            q.pop();
+            for(auto i:graph[current])
+            {
+                indegrees[i]--;
+                if(indegrees[i] == 0)
+                {
+                    q.push(i);
+                    count--;
+                }
+            }
+        }
+        
+        return count == 0;
+    }
+};
