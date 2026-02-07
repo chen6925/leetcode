@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) 
+    {
+        int column = grid[0].size();
+        int row = grid.size();
+        int answer = 0;
+        for(int i = 0;i < row;i++)
+        {
+            for(int j = 0;j < column;j++)
+            {
+                if(grid[i][j] == '1')
+                {
+                    answer++;
+                    queue<pair<int, int>>q;
+                    q.push({i,j});
+                    grid[i][j] = '2';
+                    while(!q.empty())
+                    {
+                        pair<int, int> current = q.front();
+                        q.pop();
+                        int m = current.first; 
+                        int n = current.second;
+
+                        if(m >= 1 && (grid[m - 1][n] == '1')) 
+                        {
+                            q.push({m - 1,n});
+                            grid[m - 1][n] = '2';
+                        }
+                        if(m < row - 1 && (grid[m + 1][n] == '1'))
+                        { 
+                            q.push({m + 1,n});
+                            grid[m + 1][n] = '2';
+                        }
+                        if(n >= 1 && (grid[m][n - 1] == '1')) 
+                        {
+                            q.push({m,n - 1});
+                              grid[m][n - 1] = '2';
+                        }
+                        if(n < column - 1 && (grid[m][n + 1] == '1')) 
+                        {
+                            q.push({m,n + 1});
+                            grid[m][n + 1] = '2';
+                        }
+                    }
+                }
+            }
+        }    
+        return answer;
+    }
+};
