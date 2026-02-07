@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> parent;
+    int find(int i)
+    {
+       return parent[i] == i ? i : (parent[i] = find(parent[i]));
+    }
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) 
+    {
+        vector<int> answer(2);
+        parent.push_back(0);
+        for(int i = 1;i <= edges.size();i++)
+        {
+            parent.push_back(i);
+        }
+        for(auto edge:edges)
+        {
+            int u = edge[0];
+            int v = edge[1];
+            if(find(u) == find(v)) answer = {u,v};
+            else parent[find(u)] = find(v);
+        }
+        return answer;
+    }
+};
