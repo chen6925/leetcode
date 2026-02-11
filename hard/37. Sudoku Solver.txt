@@ -1,0 +1,48 @@
+class Solution {
+public:
+    void solveSudoku(vector<vector<char>>& board) 
+    {
+
+        bool rows[9][10] = {false};
+        bool cols[9][10] = {false};
+        bool boxes[9][10] = {false};
+
+        for (int i = 0; i < 9; i++) 
+        {
+            for (int j = 0; j < 9; j++) 
+            {
+                if (board[i][j] != '.') 
+                {
+                    int num = board[i][j] - '0';
+                    int boxIdx = (i / 3) * 3 + (j / 3);
+                    rows[i][num] = cols[j][num] = boxes[boxIdx][num] = true;
+                }
+            }
+        }
+        
+        backtrack(board, 0, 0, rows, cols, boxes);
+    }
+
+private:
+    bool backtrack(vector<vector<char>>& board, int r, int c, bool rows[9][10], bool cols[9][10], bool boxes[9][10]) 
+    {
+        if (c == 9) return backtrack(board, r + 1, 0, rows, cols, boxes);
+        if (r == 9) return true;
+        if (board[r][c] != '.') return backtrack(board, r, c + 1, rows, cols, boxes);
+
+        int boxIdx = (r / 3) * 3 + (c / 3);
+
+        for (int num = 1; num <= 9; num++) 
+        {
+            if (!rows[r][num] && !cols[c][num] && !boxes[boxIdx][num]) 
+            {
+                board[r][c] = num + '0';
+                rows[r][num] = cols[c][num] = boxes[boxIdx][num] = true;
+                if (backtrack(board, r, c + 1, rows, cols, boxes)) return true;
+                board[r][c] = '.';
+                rows[r][num] = cols[c][num] = boxes[boxIdx][num] = false;
+            }
+        }
+        return false;
+    }
+};
